@@ -33,3 +33,6 @@
 
 *.env
 build/
+
+#Created Database
+data/*.db

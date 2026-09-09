@@ -7,7 +7,7 @@ set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
     CACHE STRING "")
 set(VCPKG_TARGET_TRIPLET "x64-mingw-static" CACHE STRING "")
 
-project(NotionOverlay LANGUAGES CXX)
+project(StardewNotionWidget LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -16,20 +16,27 @@ find_package(httplib CONFIG REQUIRED)
 find_package(SQLiteCpp CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
 
-add_executable(NotionOverlay src/main.cpp)
+add_executable(StardewNotionWidget
+    src/main.cpp
+    src/overlay/window.cpp
+    src/cache/CacheStore.cpp
+)
 
-target_include_directories(NotionOverlay PRIVATE include)
 
-target_link_libraries(NotionOverlay PRIVATE
+target_include_directories(StardewNotionWidget PRIVATE include)
+
+target_link_libraries(StardewNotionWidget PRIVATE
     nlohmann_json::nlohmann_json
     httplib::httplib
     SQLiteCpp
     OpenSSL::SSL
     OpenSSL::Crypto
     ws2_32
+    gdi32
+    user32
 )
 
-target_compile_definitions(NotionOverlay PRIVATE
+target_compile_definitions(StardewNotionWidget PRIVATE
     UNICODE
     _UNICODE
     CPPHTTPLIB_OPENSSL_SUPPORT
@@ -37,4 +44,4 @@ target_compile_definitions(NotionOverlay PRIVATE
     NTDDI_VERSION=0x0A000000
 )
 
-set_target_properties(NotionOverlay PROPERTIES OUTPUT_NAME "StardewNotionWidget")
+set_target_properties(StardewNotionWidget PROPERTIES OUTPUT_NAME "StardewNotionWidget")
